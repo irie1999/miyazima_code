@@ -1,4 +1,4 @@
-OBJS =  main.o
+OBJS =  main.o cal_Ne.o Ez.o set.o
 
 .PHONY: all clean
 
