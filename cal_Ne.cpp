@@ -1,11 +1,17 @@
-#include <bits/stdc++.h>
 #include <iomanip>
 #include "main.h"
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <cmath>
+#include <sstream>
 
 void cal_Ne(std::string output_dir, double *Ne){
 
-    double *point_x = new double[3];
-    double *point_y = new double[3];
+    double *point_x = new double[4];
+    double *point_y = new double[4];
+    /*位置　　配列*/
+    /*65~100→65~135,100~300→135~535,300~600→535~1135*/
     point_x[0] = 65;
     point_x[1] = 100;
     point_x[2] = 300;
@@ -34,8 +40,7 @@ void cal_Ne(std::string output_dir, double *Ne){
             Ne_data << j * step + point_x[i]  << " " << std::pow(10, a * (j * step + point_x[i]) + b) << std::endl;
             //電子密度の配列に注意！　ここでは[65]から値を格納している。[66]はstep[km]分だけ進んだ電子密度が格納されている
             /**********************************************/
-            Ne[j + point_x[i]] = std::pow(10, a * (j * step + point_x[i]) + b);
-            /**********************************************/
+            
         }
     }
 }

@@ -1,8 +1,16 @@
-#include <bits/stdc++.h>
+#include <cmath>
 #include "main.h"
 
+    //double *NU = new double [Nx];
+    //double *Ez = new double [Nx + 1];
+    //double *Hy = new double [Nx];
+    //double *ez = new double [Nx + 1];
+    //double *ez_old =  new double [Nx + 1];
+    //double *Jez= new double [Nx];
+    //double *sigma_x = new double[Nx];
+    //double *sigma_xh = new double[Nx];
 
-void cal_sigma(/*ここは頑張ってください*/){
+void cal_sigma(double *sigma_x,double *sigma_xh){
     for(int i = 1 ; i < Nx; i++){
         if(i < L){
         sigma_x[i] = sigma_max * std::pow( double( L - i ) * Dx / d ,M);
@@ -26,5 +34,4 @@ void cal_sigma(/*ここは頑張ってください*/){
         sigma_xh[i] = 0.0;
         }
     }
-    return 0;
 }

@@ -1,28 +1,31 @@
-
-#include <bits/stdc++.h>
 #include <iostream>
 #include <fstream>
 #include <string>
 #include <cmath>
-std::string output = "realDx_dat/";
-
+#include <sstream>
 #include "main.h"
+#include <iomanip>
+
+std::string output = "realDx_dat/";
 
 int main(void){
 
-    std::string output_dir = "../../data/";
-    double *Ne = new double[end_point * step];
+    std::string output_dir = "../data/";
+    std::string input_dir = output_dir;
+    double *Ne = new double[int(end_point / step)];
+    double *altitude = new double[int(end_point / step)];
     cal_Ne(output_dir, Ne);
+    two_input(input_dir + "Ne_0.5km.dat", altitude, Ne);
    
     double *Omega = new double [Nx];
     for(int i = 0; i < Nx;i++){ 
         Omega[i] = std::sqrt(Q * Q * Ne[i] / m / EPS);
     }
     //安定条件
-    double xi = 1  / std::sqrt(1 + Omega[600] * Omega[600] * Dx * Dx  / 4  / C0 / C0) ;
-    double Dt = Dx / C0 * xi  * 0.9999;
+    //double xi = 1  / std::sqrt(1 + Omega[600] * Omega[600] * Dx * Dx  / 4  / C0 / C0) ;
+    //double Dt = Dx / C0 * xi  * 0.9999;
 
-
+       
     /**********************************************/
     double *NU = new double [Nx];
     double *Ez = new double [Nx + 1];
@@ -32,7 +35,7 @@ int main(void){
     double *Jez= new double [Nx];
     double *sigma_x = new double[Nx];
     double *sigma_xh = new double[Nx];
-    
+
     /************************************************/
     
     //  double Dt0 = Dx_0 / C0;
@@ -41,12 +44,10 @@ int main(void){
     
 
     /******************************************************************************************/
-    std::ofstream ofs_exi("60km.dat",std::ios::out);
+    std::ofstream ofs_exi(output_dir + "60km.dat",std::ios::out);
     //時間
 
     cal_sigma(sigma_x, sigma_xh);
-
-
 
     for(int n = 1;n <= Nt;n++ ){
         if ( n%10 == 0 ){
@@ -60,9 +61,10 @@ int main(void){
         
         //Ez.cppに関数化
         /***************/
+        cal_Ez(ez_old, ez, Jez, Ez, sigma_x, Hy, Jz, NU);
         cal_NU(NU);
-        cal_Jz(Jez);
-        cal_Hy(Hy);    
+        cal_Jz(Jez, NU, Ez, Omega);
+        cal_Hy(Hy, sigma_xh, Ez);    
         /***************/
         
         /* for(int i = 0;i < Nx;i++){
@@ -78,7 +80,7 @@ int main(void){
         */
         /****************************************************************************************************/
         
-        ofs_exi << n * Dt * 1000 << " " <<Ez[X] << std::endl;
+        ofs_exi << n * Dt * 1000 << " " <<Ez[x_obs] << std::endl;
 
 
         if(n % 100 == 0){
@@ -98,7 +100,3 @@ int main(void){
     ofs_exi.close();          
     return 0;
 }
-
-
-
-
